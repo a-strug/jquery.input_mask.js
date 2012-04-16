@@ -71,7 +71,6 @@
 		regExp = regExp.replace(/(\\\*)/gi, "[A-Za-zа-яА-ЯіІєЄїЇёЁ0-9]");
 		regExp = regExp.replace(/([.*+?^$()])/g, "\\$1");
 		regExp = regExp.replace(/(\\w)/ig, "[A-Za-zа-яА-ЯіІєЄїЇёЁ]");
-		console.log(regExp);
 		return regExp;
 	}
 
