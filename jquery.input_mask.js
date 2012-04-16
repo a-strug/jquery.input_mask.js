@@ -23,7 +23,7 @@
 		this.mask    		 = this.obj.data('mask') || options.mask;
 		this.regExpFromMask = this.generateRegExp();
 		this.editablePos = [];
-		this.strType     = ['w', 'd'];	
+		this.strType     = ['w', 'd', '*'];	
 		this.placeholder = this.obj.data('placeholder') || null;
 		this.rusMoreLetters = [186, 188, 190, 191, 192, 219, 221, 222];
 		this.preventCode = [37, 39, 8, 46];
@@ -67,9 +67,11 @@
 
 	Proto.generateRegExp = function(){
 		var re = /\{%(\w)(\d)(?=\})\}/gi, regExp;
-		regExp = this.mask.replace(/\{(\w)(\d)(?=\})\}/gi, "\\$1{$2}");
-		regExp = regExp.replace(/([.*+?^$()|[\]\/])/g, "\\$1");
+		regExp = this.mask.replace(/\{(\w|\*)(\d|\*)(?=\})\}/gi, "\\$1{$2}");
+		regExp = regExp.replace(/(\\\*)/gi, "[A-Za-zа-яА-ЯіІєЄїЇёЁ0-9]");
+		regExp = regExp.replace(/([.*+?^$()])/g, "\\$1");
 		regExp = regExp.replace(/(\\w)/ig, "[A-Za-zа-яА-ЯіІєЄїЇёЁ]");
+		console.log(regExp);
 		return regExp;
 	}
 
@@ -116,6 +118,14 @@
 		    } else {
 	  			return true;
 	  		}
+	  	} else if (this.editablePos[let_pos] == '*') {
+	  		if ((key >= 65 && key <= 89) || ($.inArray(key, this.rusMoreLetters) != -1) || ((key >= 48 && key <= 57) || (key >= 96 && key <= 105))) {
+	  			this.mask = this.mask.setCharAt(let_pos, String.fromCharCode(charCode));
+	  		} else if(key == 8 && let_pos >= 0) {
+		      this.mask = this.mask.setCharAt(let_pos, '_');
+		    } else {
+	  			return true;
+	  		}	  		
 	  	}
 	  }
 
