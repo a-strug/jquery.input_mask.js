@@ -1,0 +1,35 @@
+:focus {
+  outline: 0;
+}
+
+#example .input_wrapp{
+  text-align: center;
+  padding: 15px 0;
+}
+
+#example input{
+  height: 38px;
+  width: 284px;
+  background: none;
+  border: none;
+  color: #313131;
+  font-size: 22px;
+  line-height: 25px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  box-shadow: inset 0 0 5px #ccc;
+  -moz-box-shadow: inset 0 0 5px #ccc;
+  -webkit-box-shadow: inset 0 0 5px #ccc;
+}
+
+code.attr{
+  padding: 2px 5px;
+  background: #F1F1F1;
+}
+
+ol li ul{
+  margin: 0;
+}
