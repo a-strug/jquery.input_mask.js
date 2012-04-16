@@ -177,18 +177,18 @@
 	Proto.getCursorPosition = function(){
 		var pos = 0, el = this.obj.get(0), sel, selLen;
 
-	// IE Support
-	if (document.selection) {
-		el.focus();
-		sel = document.selection.createRange();
-		selLen = document.selection.createRange().text.length;
-		sel.moveStart('character', -el.value.length);
-		pos = sel.text.length - selLen;
-	} else if (el.selectionStart || el.selectionStart == '0') {
-		pos = el.selectionStart;
-	}
+		// IE Support
+		if (document.selection) {
+			el.focus();
+			sel = document.selection.createRange();
+			selLen = document.selection.createRange().text.length;
+			sel.moveStart('character', -el.value.length);
+			pos = sel.text.length - selLen;
+		} else if (el.selectionStart || el.selectionStart == '0') {
+			pos = el.selectionStart;
+		}
 
-	return pos;		
+		return pos;		
 	}
 
 	Proto.setCursorPosition = function(pos) {
