@@ -4,10 +4,13 @@
       var obj = $(this), masked = obj.data('masked');
 
       if (!masked) {
+        options = $.extend({}, $.fn.inputMask.defaults, options);
         masked = obj.data(new InputMask(obj, options));
       }
     });
 	};
+
+	$.fn.inputMask.defaults = {}
 
 	String.prototype.setCharAt = function(index, chr) {
 		if(index > this.length - 1) return str;
@@ -18,15 +21,16 @@
 		this.obj         = obj;
 		this.options     = options;
 		this.mask    		 = this.obj.data('mask') || options.mask;
-		this.editablePos = [];
-		this.strType     = ['w', 'd'];
-		this.preventCode = [37, 39, 8];
-		this.placeholder = this.obj.data('placeholder') || options.placeholder;
-		this.rusMoreLetters = [186, 188, 190, 191, 192, 219, 221, 222];
 		this.regExpFromMask = this.generateRegExp();
+		this.editablePos = [];
+		this.strType     = ['w', 'd'];	
+		this.placeholder = this.obj.data('placeholder') || null;
+		this.rusMoreLetters = [186, 188, 190, 191, 192, 219, 221, 222];
+		this.preventCode = [37, 39, 8, 46];
+
+		this.obj.val(this.placeholder);
 
 		this.parseMask();
-		this.obj.val((this.placeholder ? this.placeholder : this.mask));
 		this.events();
 	}
 
@@ -45,19 +49,18 @@
 		});
 
 		this.obj.bind('keypress', function(e){
-			// e.keyCode for IE support
+			// use e.keyCode for IE support
 			self.charCode = e.charCode || e.keyCode;
 			e.preventDefault();
 		});
 
 		this.obj.bind('blur', function(){
-			if (!self.placeholder || self.obj.val().match(self.regExpFromMask)) return;
+			if (self.obj.val().match(self.regExpFromMask)) return;
 			self.obj.val(self.placeholder);
 		});
 
 		this.obj.bind('focus', function(){
 			self.obj.val(self.mask);
-			self.setCursorPosition(0);
 		});
 	}
 
@@ -65,6 +68,7 @@
 		var re = /\{%(\w)(\d)(?=\})\}/gi, regExp;
 		regExp = this.mask.replace(/\{(\w)(\d)(?=\})\}/gi, "\\$1{$2}");
 		regExp = regExp.replace(/([.*+?^$()|[\]\/])/g, "\\$1");
+		regExp = regExp.replace(/(\\w)/ig, "[A-Za-zа-яА-ЯіІєЄїЇёЁ]");
 		return regExp;
 	}
 
@@ -73,7 +77,7 @@
 				cur_pos = this.getCursorPosition(),
 				mov_dir = 0,
 				let_pos;
-
+		
 	  if((key >= 10 && key < 32) || (key > 32 && key < 37) || (key > 40 && key < 45) || (key >= 112 && key <= 145) ) {
 	    return;
 	  } else if (key == 37 || key == 39) {
@@ -94,6 +98,7 @@
 	  let_pos = (mov_dir == 1) ? cur_pos : cur_pos - 1;
 
 	  if (this.editablePos[let_pos] != '-'){
+
 	  	if (this.editablePos[let_pos] == 'd') {
 		    if ((key >= 48 && key <= 57) || (key >= 96 && key <= 105)) {
 		      this.mask = this.mask.setCharAt(let_pos, String.fromCharCode(charCode));
@@ -158,6 +163,7 @@
 
 	Proto.getCursorPosition = function(){
 	  var pos = 0, el = this.obj.get(0), sel, selLen;
+
 	  // IE Support
 	  if (document.selection) {
 	    el.focus();
@@ -168,24 +174,27 @@
 	  } else if (el.selectionStart || el.selectionStart == '0') {
 	    pos = el.selectionStart;
 	  }
+
 	  return pos;		
 	}
 
 	Proto.setCursorPosition = function(pos) {
+	  if(this.obj.length == 0) return this.obj;
 	  return this.setSelection(pos, pos);
 	};
 
 	Proto.setSelection = function(start, end){
 	  var el = this.obj.get(0), range;
-    if (el.setSelectionRange) {
-      el.focus();
-      el.setSelectionRange(start, end);
-    } else if (el.createTextRange) {
-      range = el.createTextRange();
-      range.collapse(true);
-      range.moveEnd('character', end);
-      range.moveStart('character', start);
-      range.select();
-    }	
+
+	    if (el.setSelectionRange) {
+	      el.focus();
+	      el.setSelectionRange(start, end);
+	    } else if (el.createTextRange) {
+	      range = el.createTextRange();
+	      range.collapse(true);
+	      range.moveEnd('character', end);
+	      range.moveStart('character', start);
+	      range.select();
+	    }	
 	}
 })(jQuery)
