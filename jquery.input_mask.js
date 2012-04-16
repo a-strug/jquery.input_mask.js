@@ -61,6 +61,7 @@
 
 		this.obj.bind('focus', function(){
 			self.obj.val(self.mask);
+			self.setCursorPosition(0);
 		});
 	}
 
