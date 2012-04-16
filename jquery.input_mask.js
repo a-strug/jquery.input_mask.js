@@ -1,13 +1,13 @@
 (function($, undefined) {
 	$.fn.inputMask = function(options) {
-    return this.each(function() {
-      var obj = $(this), masked = obj.data('masked');
+		return this.each(function() {
+		var obj = $(this), masked = obj.data('masked');
 
-      if (!masked) {
-        options = $.extend({}, $.fn.inputMask.defaults, options);
-        masked = obj.data(new InputMask(obj, options));
-      }
-    });
+			if (!masked) {
+				options = $.extend({}, $.fn.inputMask.defaults, options);
+				masked = obj.data(new InputMask(obj, options));
+			}
+		});
 	};
 
 	$.fn.inputMask.defaults = {
@@ -83,64 +83,64 @@
 
 	Proto.bindKeyPress = function(e, charCode){
 		var key = e.which || e.keyCode,
-				cur_pos = this.getCursorPosition(),
-				mov_dir = 0,
-				let_pos,
-				move_cursor = false;
-	
-	  if((key >= 10 && key < 32) || (key > 32 && key < 37) || (key > 40 && key < 45) || (key >= 112 && key <= 145) ) {
-	    return;
-	  } else if (key == 37 || key == 39) {
-	  	cur_pos = (key == 37 ? cur_pos - 1 : cur_pos + 1);
-	  	this.setCursorPosition(cur_pos);
-	  }
+		cur_pos = this.getCursorPosition(),
+		mov_dir = 0,
+		let_pos,
+		move_cursor = false;
 
-	  mov_dir = (key == 8) ? -1 : 1;
+		if((key >= 10 && key < 32) || (key > 32 && key < 37) || (key > 40 && key < 45) || (key >= 112 && key <= 145) ) {
+			return;
+		} else if (key == 37 || key == 39) {
+			cur_pos = (key == 37 ? cur_pos - 1 : cur_pos + 1);
+			this.setCursorPosition(cur_pos);
+		}
 
-	  if(mov_dir == 1 && cur_pos > this.mask.length) {
-	    return;
-	  }
+		mov_dir = (key == 8) ? -1 : 1;
 
-	  while(this.editablePos[(mov_dir == 1 ? cur_pos : cur_pos - 1)] == '-') {
-	    cur_pos += mov_dir;	    	
-	  }
+		if(mov_dir == 1 && cur_pos > this.mask.length) {
+			return;
+		}
 
-	  let_pos = (mov_dir == 1) ? cur_pos : cur_pos - 1;
+		while(this.editablePos[(mov_dir == 1 ? cur_pos : cur_pos - 1)] == '-') {
+			cur_pos += mov_dir;	    	
+		}
 
-	  if (this.editablePos[let_pos] != '-'){
+		let_pos = (mov_dir == 1) ? cur_pos : cur_pos - 1;
+
+		if (this.editablePos[let_pos] != '-'){
 			if(key == 8 && let_pos >= 0) {
-	      charCode = 95;
-	      move_cursor = true;
-	    }
+				charCode = 95;
+				move_cursor = true;
+			}
 
-	  	if (this.editablePos[let_pos] == 'd') {
-		    if ((key >= 48 && key <= 57) || (key >= 96 && key <= 105)) {
-		      move_cursor = true;
-		    }	    		
-	  	} else if (this.editablePos[let_pos] == 'w') {
-	  		if ((key >= 65 && key <= 89) || ($.inArray(key, this.rusMoreLetters) != -1)) {
-	  			move_cursor = true;
-	  		}
-	  	} else if (this.editablePos[let_pos] == '*') {
-	  		if ((key >= 65 && key <= 89) || ($.inArray(key, this.rusMoreLetters) != -1) || ((key >= 48 && key <= 57) || (key >= 96 && key <= 105))) {
-	  			move_cursor = true;
-	  		}	  		
-	  	}
-	  }
+			if (this.editablePos[let_pos] == 'd') {
+				if ((key >= 48 && key <= 57) || (key >= 96 && key <= 105)) {
+					move_cursor = true;
+				}	    		
+			} else if (this.editablePos[let_pos] == 'w') {
+				if ((key >= 65 && key <= 89) || ($.inArray(key, this.rusMoreLetters) != -1)) {
+					move_cursor = true;
+				}
+			} else if (this.editablePos[let_pos] == '*') {
+				if ((key >= 65 && key <= 89) || ($.inArray(key, this.rusMoreLetters) != -1) || ((key >= 48 && key <= 57) || (key >= 96 && key <= 105))) {
+					move_cursor = true;
+				}	  		
+			}
+		}
 
-	  if (move_cursor === true) {
-	  	this.mask = this.mask.setCharAt(let_pos, String.fromCharCode(charCode));
-		  this.obj.val(this.mask);
+		if (move_cursor === true) {
+			this.mask = this.mask.setCharAt(let_pos, String.fromCharCode(charCode));
+			this.obj.val(this.mask);
 			this.setCursorPosition(cur_pos + mov_dir);
-	  }	
+		}	
 	}
 
 	Proto.parseMask = function(){
 		var re = /\{(.*?)(?=\})\}/gi,
-				str_replace = [],
-				sub_length  = 0,
-				sub_type    = 's';
-		
+		str_replace = [],
+		sub_length  = 0,
+		sub_type    = 's';
+
 		if (matches = this.mask.match(re)) {
 			var len = matches.length;
 			for (var i=0; i < len; i++) {
@@ -175,39 +175,39 @@
 	}
 
 	Proto.getCursorPosition = function(){
-	  var pos = 0, el = this.obj.get(0), sel, selLen;
+		var pos = 0, el = this.obj.get(0), sel, selLen;
 
-	  // IE Support
-	  if (document.selection) {
-	    el.focus();
-	    sel = document.selection.createRange();
-	    selLen = document.selection.createRange().text.length;
-	    sel.moveStart('character', -el.value.length);
-	    pos = sel.text.length - selLen;
-	  } else if (el.selectionStart || el.selectionStart == '0') {
-	    pos = el.selectionStart;
-	  }
+	// IE Support
+	if (document.selection) {
+		el.focus();
+		sel = document.selection.createRange();
+		selLen = document.selection.createRange().text.length;
+		sel.moveStart('character', -el.value.length);
+		pos = sel.text.length - selLen;
+	} else if (el.selectionStart || el.selectionStart == '0') {
+		pos = el.selectionStart;
+	}
 
-	  return pos;		
+	return pos;		
 	}
 
 	Proto.setCursorPosition = function(pos) {
-	  if(this.obj.length == 0) return this.obj;
-	  return this.setSelection(pos, pos);
+		if(this.obj.length == 0) return this.obj;
+		return this.setSelection(pos, pos);
 	};
 
 	Proto.setSelection = function(start, end){
-	  var el = this.obj.get(0), range;
+		var el = this.obj.get(0), range;
 
-	    if (el.setSelectionRange) {
-	      el.focus();
-	      el.setSelectionRange(start, end);
-	    } else if (el.createTextRange) {
-	      range = el.createTextRange();
-	      range.collapse(true);
-	      range.moveEnd('character', end);
-	      range.moveStart('character', start);
-	      range.select();
-	    }	
+		if (el.setSelectionRange) {
+			el.focus();
+			el.setSelectionRange(start, end);
+		} else if (el.createTextRange) {
+			range = el.createTextRange();
+			range.collapse(true);
+			range.moveEnd('character', end);
+			range.moveStart('character', start);
+			range.select();
+		}	
 	}
 })(jQuery)
