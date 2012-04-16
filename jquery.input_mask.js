@@ -78,8 +78,9 @@
 		var key = e.which || e.keyCode,
 				cur_pos = this.getCursorPosition(),
 				mov_dir = 0,
-				let_pos;
-		
+				let_pos,
+				move_cursor = false;
+	
 	  if((key >= 10 && key < 32) || (key > 32 && key < 37) || (key > 40 && key < 45) || (key >= 112 && key <= 145) ) {
 	    return;
 	  } else if (key == 37 || key == 39) {
@@ -100,36 +101,31 @@
 	  let_pos = (mov_dir == 1) ? cur_pos : cur_pos - 1;
 
 	  if (this.editablePos[let_pos] != '-'){
+			if(key == 8 && let_pos >= 0) {
+	      charCode = 95;
+	      move_cursor = true;
+	    }
 
 	  	if (this.editablePos[let_pos] == 'd') {
 		    if ((key >= 48 && key <= 57) || (key >= 96 && key <= 105)) {
-		      this.mask = this.mask.setCharAt(let_pos, String.fromCharCode(charCode));
-		    } else if(key == 8 && let_pos >= 0) {
-		      this.mask = this.mask.setCharAt(let_pos, '_');
-		    } else {
-		      return true;
+		      move_cursor = true;
 		    }	    		
 	  	} else if (this.editablePos[let_pos] == 'w') {
 	  		if ((key >= 65 && key <= 89) || ($.inArray(key, this.rusMoreLetters) != -1)) {
-	  			this.mask = this.mask.setCharAt(let_pos, String.fromCharCode(charCode));
-	  		} else if(key == 8 && let_pos >= 0) {
-		      this.mask = this.mask.setCharAt(let_pos, '_');
-		    } else {
-	  			return true;
+	  			move_cursor = true;
 	  		}
 	  	} else if (this.editablePos[let_pos] == '*') {
 	  		if ((key >= 65 && key <= 89) || ($.inArray(key, this.rusMoreLetters) != -1) || ((key >= 48 && key <= 57) || (key >= 96 && key <= 105))) {
-	  			this.mask = this.mask.setCharAt(let_pos, String.fromCharCode(charCode));
-	  		} else if(key == 8 && let_pos >= 0) {
-		      this.mask = this.mask.setCharAt(let_pos, '_');
-		    } else {
-	  			return true;
+	  			move_cursor = true;
 	  		}	  		
 	  	}
 	  }
 
-	  this.obj.val(this.mask);
-		this.setCursorPosition(cur_pos + mov_dir);	
+	  if (move_cursor === true) {
+	  	this.mask = this.mask.setCharAt(let_pos, String.fromCharCode(charCode));
+		  this.obj.val(this.mask);
+			this.setCursorPosition(cur_pos + mov_dir);
+	  }	
 	}
 
 	Proto.parseMask = function(){
