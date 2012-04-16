@@ -32,7 +32,13 @@
 
 				<div class="input_wrapp">
 					<input type="text" data-placeholder="Phone number" class="must_be_masked" data-mask="+38 ({d3}) {d3}-{d2}-{d2}" />
+          <p class="example">+38 (068) 7328422<br/><code class="attr">+38 ({d3}) {d3}-{d2}-{d2}</code></p>
 				</div>
+
+        <div class="input_wrapp">
+          <input type="text" data-placeholder="SSN" class="must_be_masked" data-mask="{d3}-{*5}-{w3}" />
+          <p class="example">648-G6hY2-gHH<br/><code class="attr">{d3}-{*5}-{w3}</code></p>
+        </div>
 
 				<h3>Initialize:</h3>
 <pre><code><strong>Options</strong>
@@ -54,11 +60,12 @@ $(selector).inputMask( options );
 
 				<h3>Options:</h3>
 				<ol>
-					<li><code class="attr">mask</code> - a input mask has syntex <code class="attr">{[d|w][0-9]}</code>.<br/>
+					<li><code class="attr">mask</code> - a input mask has syntex <code class="attr">{[d|w|*][0-9]}</code>.<br/>
 					The first part indicates the type of values ​​supported. 
 					<ul>
-						<li><code class="attr">d</code> - only numbers</li>
-						<li><code class="attr">w</code> - only word character</li>
+						<li><code class="attr">d</code> - only numbers [0-9]</li>
+						<li><code class="attr">w</code> - only word character [a-zA-Zа-яА-ЯіІїЇєЄёЁ]</li>
+            <li><code class="attr">*</code> - number and word character [a-zA-Zа-яА-ЯіІїЇєЄёЁ0-9]</li>
 					</ul>
 					The second - number of characters.
 					</li>
