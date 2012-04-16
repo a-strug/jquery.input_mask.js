@@ -10,7 +10,13 @@
     });
 	};
 
-	$.fn.inputMask.defaults = {}
+	$.fn.inputMask.defaults = {
+		regExp: {
+			'd': "[0-9]",
+			'w': "[A-Za-zа-яА-ЯіІєЄїЇёЁ]",
+			'*': "[A-Za-zа-яА-ЯіІєЄїЇёЁ0-9"
+		}
+	}
 
 	String.prototype.setCharAt = function(index, chr) {
 		if(index > this.length - 1) return str;
@@ -29,7 +35,6 @@
 		this.preventCode = [37, 39, 8, 46];
 
 		this.obj.val(this.placeholder);
-
 		this.parseMask();
 		this.events();
 	}
@@ -67,11 +72,13 @@
 
 	Proto.generateRegExp = function(){
 		var re = /\{%(\w)(\d)(?=\})\}/gi, regExp;
-		regExp = this.mask.replace(/\{(\w|\*)(\d|\*)(?=\})\}/gi, "\\$1{$2}");
-		regExp = regExp.replace(/(\\\*)/gi, "[A-Za-zа-яА-ЯіІєЄїЇёЁ0-9]");
+		regExp = this.mask.replace(/\{(\w|\*)(\d|\*)(?=\})\}/gi, this.replacer);
 		regExp = regExp.replace(/([.*+?^$()])/g, "\\$1");
-		regExp = regExp.replace(/(\\w)/ig, "[A-Za-zа-яА-ЯіІєЄїЇёЁ]");
 		return regExp;
+	}
+
+	Proto.replacer = function(str, p1, p2){
+		return $.fn.inputMask.defaults.regExp[p1] + "{" + p2 + "}";
 	}
 
 	Proto.bindKeyPress = function(e, charCode){
