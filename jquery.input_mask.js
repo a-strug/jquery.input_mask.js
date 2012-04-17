@@ -24,15 +24,15 @@
 	}
 
 	function InputMask(obj, options) {
-		this.obj         = obj;
-		this.options     = options;
-		this.mask    		 = this.obj.data('mask') || options.mask;
+		this.obj            = obj;
+		this.options        = options;
+		this.mask           = this.obj.data('mask') || options.mask;
 		this.regExpFromMask = this.generateRegExp();
-		this.editablePos = [];
-		this.strType     = ['w', 'd', '*'];	
-		this.placeholder = this.obj.data('placeholder') || null;
+		this.editablePos    = [];
+		this.strType        = ['w', 'd', '*'];	
+		this.placeholder    = this.obj.data('placeholder') || null;
 		this.rusMoreLetters = [186, 188, 190, 191, 192, 219, 221, 222];
-		this.preventCode = [37, 39, 8, 46];
+		this.preventCode    = [37, 39, 8, 46];
 
 		this.obj.val(this.placeholder);
 		this.parseMask();
@@ -139,7 +139,7 @@
 		var re = /\{(.*?)(?=\})\}/gi,
 		str_replace = [],
 		sub_length  = 0,
-		sub_type    = 's';
+		sub_type    = 'w';
 
 		if (matches = this.mask.match(re)) {
 			var len = matches.length;
