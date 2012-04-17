@@ -72,7 +72,7 @@
 
 	Proto.generateRegExp = function(){
 		var re = /\{%(\w)(\d)(?=\})\}/gi, regExp;
-		regExp = this.mask.replace(/\{(\w|\*)(\d|\*)(?=\})\}/gi, this.replacer);
+		regExp = this.mask.replace(/\{(\w|\*)(\d)(?=\})\}/gi, this.replacer);
 		regExp = regExp.replace(/([.*+?^$()])/g, "\\$1");
 		return regExp;
 	}
