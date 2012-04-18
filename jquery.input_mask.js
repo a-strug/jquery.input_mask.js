@@ -29,7 +29,7 @@
 		this.mask           = this.obj.data('mask') || options.mask;
 		this.regExpFromMask = this.generateRegExp();
 		this.editablePos    = [];
-		this.strType        = ['w', 'd', '*'];	
+		this.strType        = this.regExpToArray();	
 		this.placeholder    = this.obj.data('placeholder') || null;
 		this.rusMoreLetters = [186, 188, 190, 191, 192, 219, 221, 222];
 		this.preventCode    = [37, 39, 8, 46];
@@ -40,7 +40,13 @@
 	}
 
 	var Proto = InputMask.prototype;
-
+        
+        Proto.regExpToArray = function(){
+		var keys = [];
+		$.each(this.options.regExp, function(key, val){ keys.push(key) });
+		return keys;
+        }
+        
 	Proto.events = function(){
 		var self = this;
 
