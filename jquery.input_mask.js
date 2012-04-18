@@ -33,7 +33,7 @@
 		this.placeholder    = this.obj.data('placeholder') || null;
 		this.rusMoreLetters = [186, 188, 190, 191, 192, 219, 221, 222];
 		this.preventCode    = [37, 39, 8, 46];
-
+		this.masked         = true;
 		this.obj.val(this.placeholder);
 		this.parseMask();
 		this.events();
